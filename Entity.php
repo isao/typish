@@ -502,4 +502,14 @@ abstract class Entity implements ArrayAccess, Countable, Iterator
     }
     return (bool) $ok;
   }
+
+  /**
+   * check if a value looks like a sha1 hash
+   * @param string
+   * @return bool
+   */
+  public static function sha1hashValidate($val)
+  {
+    return (strlen($val) === 40) && ctype_xdigit($val);
+  }
 }
