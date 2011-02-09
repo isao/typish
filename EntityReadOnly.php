@@ -20,6 +20,5 @@ abstract class EntityReadOnly extends Entity
     return $this->is_writeable
       ? parent::__set($key, $val)
       : user_error('properties can be set via constructor only', E_USER_NOTICE);
-    }
   }
 }
