@@ -113,7 +113,7 @@ class MockEntityValidatorsTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse(Entity::timestampValidate('asd  1274213448  asldkj'));
 	}
 	
-	public function testRegex()
+	public function testValidatorRegex()
 	{
 		$this->assertTrue(Entity::regexValidate('foobar', '/^foo/i'));
 		$this->assertFalse(Entity::regexValidate('foobar', '/^FOO/'));

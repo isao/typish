@@ -113,7 +113,7 @@ class MockEntitySanitizersTest extends PHPUnit_Framework_TestCase
 		$this->assertNotInternalType('int', $actual);
 	}
 	
-	public function testRegex()
+	public function testSanitzerRegex()
 	{
 		$actual = Entity::regexSanitize('foobarbar', '/bar/', 'baz');
 		$this->assertSame('foobazbaz', $actual);
