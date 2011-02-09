@@ -1,5 +1,5 @@
 <?php
-namespace lib\Type;
+namespace library\Type;
 
 use ArrayAccess
   , Countable

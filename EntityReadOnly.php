@@ -1,5 +1,5 @@
 <?php
-namespace lib\Type;
+namespace library\Type;
 
 /**
  * EntityReadOnly - a simple entity type that prevents changing properties after

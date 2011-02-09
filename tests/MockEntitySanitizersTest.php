@@ -1,6 +1,6 @@
 <?php
-use lib\Type\Entity
-  , lib\Type\MockEntityMapped;
+use library\Type\Entity
+  , library\Type\MockEntityMapped;
 
 require_once __DIR__.'/MockEntity.php';
 

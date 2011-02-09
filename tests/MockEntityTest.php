@@ -1,8 +1,8 @@
 <?php
-use lib\Type\Entity
-  , lib\Type\MockEntity
-  , lib\Type\MockException1Entity
-  , lib\Type\MockException2Entity;
+use library\Type\Entity
+  , library\Type\MockEntity
+  , library\Type\MockException1Entity
+  , library\Type\MockException2Entity;
 
 require_once __DIR__.'/MockEntity.php';
 

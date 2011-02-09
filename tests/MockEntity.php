@@ -1,5 +1,5 @@
 <?php
-namespace lib\Type;
+namespace library\Type;
 
 require_once dirname(__DIR__).'/Entity.php';
 

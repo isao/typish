@@ -1,5 +1,5 @@
 <?php
-namespace lib\Type;
+namespace library\Type;
 
 /**
  * CollectionMaker - to use/configure collections without pre-defining a class.
