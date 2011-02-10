@@ -13,11 +13,11 @@ abstract class Entity implements ArrayAccess, Countable, Iterator
   const VALIDATE_SUFFIX = 'Validate';
   const EXOGENEOUS_ERRKEY = '*';
 
-  protected $properties = array(/* property names and default values */);
-  protected $sanitizers = array(/* callbacks to modify properties */);
-  protected $validators = array(/* callbacks to validate properties*/);
-  protected $messages = array(/* optional validation error messages */);
-  protected $errors = array(/* property validation errors */);
+  protected $properties = array(/* property names => default values */);
+  protected $sanitizers = array(/* property names => modifying callbacks */);
+  protected $validators = array(/* property names => validating callbacks */);
+  protected $messages = array(/* property names => validation mgs */);
+  protected $errors = array(/* property names => validation errors */);
   protected $valid = false;//bool for Iterator support
 
   /**
