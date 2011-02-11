@@ -21,14 +21,15 @@ abstract class Entity implements ArrayAccess, Countable, Iterator
   protected $valid = false;//bool for Iterator support
 
   /**
-   * Bulk-set properties from an associative array or object. Sanitizers and
-   * validators (if applicable) are applied to the provided properties. Keys or
-   * properties not defined in $this->properties are ignored, unless they are
-   * included in the $map argument as an alias or synonym. Arguments can also
-   * be objects that can be cast to arrays.
-   * @param array $props key/values to assign to matching Entity properties
-   * @param array $map alternate keyname(s) => Entity property name
-   * @param array $opts allow child class extension
+   * Bulk-set properties from an associative array or an object that can be cast
+   * to an array. Sanitizers and validators (if applicable) are applied to the
+   * provided properties. Keys or properties not defined in $this->properties
+   * are ignored, unless they are included in the $map argument as an alias or
+   * synonym.
+   *
+   * @param array key/values to assign to matching Entity properties
+   * @param array map alternate keyname(s) => Entity property name
+   * @param array allow child class configuration
    */
   public function __construct($props = array(), $map = array(), $opts = array())
   {
@@ -106,7 +107,7 @@ abstract class Entity implements ArrayAccess, Countable, Iterator
       } elseif(array_key_exists($key, $map) && !array_key_exists($map[$key], $input)) {
         //key name maps & the key it maps to isn't also elsewhere in the input
         $props[$map[$key]] = $val;
-      }
+      } //else ignore, we're not interested in this one
     }
     return $props;
   }
