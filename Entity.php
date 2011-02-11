@@ -27,9 +27,10 @@ abstract class Entity implements ArrayAccess, Countable, Iterator
    * included in the $map argument as an alias or synonym. Arguments can also
    * be objects that can be cast to arrays.
    * @param array $props key/values to assign to matching Entity properties
-   * @param array $map alternate keynames => Entity property names
+   * @param array $map alternate keyname(s) => Entity property name
+   * @param array $opts allow child class extension
    */
-  public function __construct($props = array(), $map = array())
+  public function __construct($props = array(), $map = array(), $opts = array())
   {
     //cast to arrays, filter out non-Entity key value pairs, and map synonymous
     //keys in the input to property keys if applicable
@@ -73,6 +74,7 @@ abstract class Entity implements ArrayAccess, Countable, Iterator
     if(!array_key_exists($key, $this->properties)) {
       throw new OutOfBoundsException("setting undeclared property '$key' not allowed");
     }
+
     $this->properties[$key] = $val;
     $this->_sanitize($key);
     $this->_validate($key);
@@ -163,7 +165,7 @@ abstract class Entity implements ArrayAccess, Countable, Iterator
         break;
       default:
         throw new BadMethodCallException(
-          "$suffix method {$param[0]} isn't defined"
+          "property '$key' $suffix method '{$param[0]}' isn't defined"
         );
     }
 
@@ -242,14 +244,6 @@ abstract class Entity implements ArrayAccess, Countable, Iterator
   public function unsetExternalError()
   {
     unset($this->errors[static::EXOGENEOUS_ERRKEY]);
-  }
-
-  /**
-   * @return ArrayIterator
-   */
-  public function getIterator()//IteratorAggregate interface
-  {
-    return new ArrayIterator($this->properties);
   }
 
   /**
