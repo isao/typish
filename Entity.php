@@ -9,8 +9,9 @@ use ArrayAccess
 
 abstract class Entity implements ArrayAccess, Countable, Iterator
 {
-  const SANITIZE_SUFFIX = 'Sanitize';
-  const VALIDATE_SUFFIX = 'Validate';
+  const SANITIZE_SUFFIX = 'Sanitize';//for sanitizer callbacks in class scope
+  const VALIDATE_SUFFIX = 'Validate';//for sanitizer callbacks in class scope
+  const KEYMAP_SUFFIX = '_keymap';//for keymap lookups
   const EXOGENEOUS_ERRKEY = '*';
 
   protected $properties = array(/* property names => default values */);
@@ -262,6 +263,22 @@ abstract class Entity implements ArrayAccess, Countable, Iterator
   public function getJson($options = JSON_FORCE_OBJECT)
   {
     return json_encode($this->getArray(), $options);
+  }
+
+  /**
+   * convenience method to access keymaps defined in class scope, but keep them
+   * protected.
+   * @see $this->__construct() & $this->_map()
+   * @param string name of a static property when suffixed with "_keymap"
+   * @return array input name(s) => mapped entity property name
+   */
+  public static function getKeyMap($name)
+  {
+    $map_name = $name.'_keymap';
+    if(!isset(static::$$map_name)) {
+      throw new InvalidArgumentException("key map '$name' doesn't exist");
+    }
+    return (array) static::$$map_name;
   }
 
   /**
