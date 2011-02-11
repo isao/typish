@@ -74,26 +74,33 @@ abstract class Collection implements ArrayAccess, Countable, Iterator
 
   /**
    * add an object to the collection
+   * @param Entity to add to the collection
+   * @param bool filter out objects that don't conform or contain errors
+   * @param bool record in $errors info about filtered objects
    * @return bool ok or error
    */
-  public function set($entity)
+  public function set($entity, $filter = false, $set_error = false)
   {
     switch(true)
     {
-      //bad input
-      case !is_a($entity, $this->classname):
-        $this->errors[] = 'class '.get_class($entity)." must implement {$this->classname}";
+      //entity class belong in this collection?
+      case $filter && !is_a($entity, $this->classname):
+        if($set_error) {
+          $this->errors[] =
+            'class '.get_class($entity)." must implement {$this->classname}";
+        }
         $ok = false;
         break;
 
-      //entity has errors
-      case method_exists($entity, 'errors') && $entity->errors():
-        //record entity error
-        $this->errors[$entity->__get($this->classpkey)] = $entity->errors();
+      //entity contains errors?
+      case $filter && method_exists($entity, 'errors') && $entity->errors():
+        if($set_error) {
+          $this->errors[$entity->__get($this->classpkey)] = $entity->errors();
+        }
         $ok = false;
         break;
 
-      //add to the container, indexed by the entity's primary key property
+      //add to the collection
       default:
         $this->_add($entity);
         $ok = true;
@@ -103,7 +110,8 @@ abstract class Collection implements ArrayAccess, Countable, Iterator
   }
 
   /**
-   * add an entity to the collection-- slim method for overriding in subclasses
+   * add an entity to the collection, indexed by the entity's primary key
+   * property. Note: this is a slim method for overriding in subclasses
    * @param entity
    */
   protected function _add($entity)
