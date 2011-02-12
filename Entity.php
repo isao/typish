@@ -37,7 +37,7 @@ abstract class Entity implements ArrayAccess, Countable, Iterator
     //cast to arrays, filter out non-Entity key value pairs, and map synonymous
     //keys in the input to property keys if applicable
     $props = $map
-      ? $this->_map((array) $props, (array) $map)
+      ? $this->_map($props, $map)
       : array_intersect_key((array) $props, $this->properties);
 
     //use defaults for any key value pairs missing from $props
@@ -98,8 +98,12 @@ abstract class Entity implements ArrayAccess, Countable, Iterator
    * @param array $map alternate keynames => Entity property names
    * @return array
    */
-  protected function _map(array $input, array $map)
+  protected function _map($input, $map)
   {
+    if(is_scalar($map)) {
+    	$map = $this->getKeyMap($map);
+    }
+
     $props = array();
     foreach($input as $key => $val) {
       if(array_key_exists($key, $this->properties)) {
@@ -110,6 +114,7 @@ abstract class Entity implements ArrayAccess, Countable, Iterator
         $props[$map[$key]] = $val;
       } //else ignore, we're not interested in this one
     }
+
     return $props;
   }
 
