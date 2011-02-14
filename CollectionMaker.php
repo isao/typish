@@ -58,7 +58,7 @@ class CollectionMaker extends Collection
     parent::_add($entity);
   }
 
-  public function get($index)
+  public function getIndex($index)
   {
     if(isset($this->indexes[$index])) {
       return $this->indexes[$index];
