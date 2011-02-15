@@ -101,7 +101,7 @@ abstract class Entity implements ArrayAccess, Countable, Iterator
   protected function _map($input, $map)
   {
     if(is_scalar($map)) {
-    	$map = $this->getKeyMap($map);
+      $map = $this->getKeyMap($map);
     }
 
     $props = array();
