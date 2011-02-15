@@ -17,6 +17,7 @@ abstract class Collection implements ArrayAccess, Countable, Iterator
   protected $classpkey;//property name used to access collected objects
   protected $container = array();//Entity[]
   protected $errors = array();//array id => optional msg
+  protected $indexes = array();//array[], via indexers in child implementations
   protected $valid = false;//bool for Iterator support
 
   public function __construct($entities = array(), $options = array())
@@ -178,6 +179,17 @@ abstract class Collection implements ArrayAccess, Countable, Iterator
   public function getJson($options = JSON_FORCE_OBJECT)
   {
     return json_encode($this->getArray(), $options);
+  }
+
+  /**
+   * child implementations can save entity metadata in lists or hashes as they
+   * are added. this is a generic way to access them
+   * @param string
+   * @return array
+   */
+  public function getIndex($index)
+  {
+    return $this->indexes[$index];
   }
 
   /*

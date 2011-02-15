@@ -16,7 +16,6 @@ namespace library\Type;
 class CollectionMaker extends Collection
 {
   protected $indexers = array();//callback[]
-  protected $indexes = array();//array[]
 
   protected static $optdefs = array(
     'classname' => 'Entity',
@@ -57,13 +56,4 @@ class CollectionMaker extends Collection
     }
     parent::_add($entity);
   }
-
-  public function getIndex($index)
-  {
-    if(isset($this->indexes[$index])) {
-      return $this->indexes[$index];
-    }
-    return parent::get($index);
-  }
-
 }
