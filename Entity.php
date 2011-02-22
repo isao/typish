@@ -7,6 +7,11 @@ use ArrayAccess
   , BadMethodCallException
   , OutOfBoundsException;
 
+/**
+ * Entity - abstract class to encapsulate a set of key/value pairs, with
+ * consistent setter/getter/sanitization/validation/error methods
+ *
+ */
 abstract class Entity implements ArrayAccess, Countable, Iterator
 {
   const SANITIZE_SUFFIX = 'Sanitize';//for sanitizer callbacks in class scope
@@ -457,6 +462,11 @@ abstract class Entity implements ArrayAccess, Countable, Iterator
     return is_numeric($val)
       && (is_null($max) || ($val <= $max))
       && (is_null($min) || ($val >= $min));
+  }
+
+  public static function hasValueValidate($val, $should_be)
+  {
+    return $val === $should_be;
   }
 
   /**

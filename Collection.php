@@ -8,7 +8,7 @@ use ArrayAccess
   , RuntimeException;
 
 /**
- * Collection
+ * Collection - entity container with consistent getter/setter/indexing
  *
  */
 abstract class Collection implements ArrayAccess, Countable, Iterator
