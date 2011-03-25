@@ -464,11 +464,6 @@ abstract class Entity implements ArrayAccess, Countable, Iterator
       && (is_null($min) || ($val >= $min));
   }
 
-  public static function hasValueValidate($val, $should_be)
-  {
-    return $val === $should_be;
-  }
-
   /**
    * @param int
    * @return bool
