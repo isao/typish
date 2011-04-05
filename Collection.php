@@ -101,6 +101,12 @@ abstract class Collection implements ArrayAccess, Countable, Iterator
         $ok = false;
         break;
 
+      //if an array is passed, construct an entity & add it
+      case is_array($entity):
+        $class = $this->classname;
+        $ok = $this->set(new $class($entity), true, true);
+        break;
+
       //add to the collection
       default:
         $this->_add($entity);
