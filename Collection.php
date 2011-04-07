@@ -7,25 +7,11 @@ use ArrayAccess
   , InvalidArgumentException
   , RuntimeException;
 
-interface CollectionInterface extends ArrayAccess, Countable, Iterator
-{
-  public function __construct($entities = array(), $options = array());
-  public function get($id);
-  public function getProperty($id, $key);
-  public function set($entity, $filter, $set_error);
-  public function sort($key, $callback = null);
-  public function errors();
-  public function getIds();
-  public function getArray();
-  public function getJson($options);
-  #public function getIndex($index);
-}
-
 /**
  * Collection - entity container with consistent getter/setter/indexing
  *
  */
-abstract class Collection implements CollectionInterface
+abstract class Collection implements ArrayAccess, Countable, Iterator
 {
   protected $classname;//name of class of objects that can be collected
   protected $classpkey;//property name used to access collected objects
