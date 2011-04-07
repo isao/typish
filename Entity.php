@@ -7,12 +7,26 @@ use ArrayAccess
   , BadMethodCallException
   , OutOfBoundsException;
 
+interface EntityInterface extends ArrayAccess, Countable, Iterator
+{
+  public function __construct($props, $map, $opts);
+  public function errors();
+  #public function errorsExcept();
+  #public function errorsMatching();
+  #public function valuesMatching();
+  #public function setExternalError($msg);
+  #public function unsetExternalError();
+  public function getArray();
+  public function getJson($options);
+  public static function getPropertyNames();
+}
+
 /**
  * Entity - abstract class to encapsulate a set of key/value pairs, with
  * consistent setter/getter/sanitization/validation/error methods
  *
  */
-abstract class Entity implements ArrayAccess, Countable, Iterator
+abstract class Entity implements EntityInterface
 {
   const SANITIZE_SUFFIX = 'Sanitize';//for sanitizer callbacks in class scope
   const VALIDATE_SUFFIX = 'Validate';//for sanitizer callbacks in class scope

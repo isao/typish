@@ -25,12 +25,12 @@ class CollectionMaker extends Collection
 
   /**
    * Adds indexers to parent options ...
-   * @param $entities  a starting list of entities for the collection
-   * @param $options  indexers and options for parent
+   * @param $entities a starting list of entities for the collection
+   * @param $options indexers and options for parent
    */
-  public function __construct($entities = array(), array $options = array())
+  public function __construct($entities = array(), $opts = array())
   {
-    $options += static::$optdefs;
+    $options = ((array) $opts) + static::$optdefs;
     $this->classname = $options['classname'];
     $this->classpkey = $options['classpkey'];
 
