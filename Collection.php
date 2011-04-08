@@ -75,39 +75,31 @@ abstract class Collection implements ArrayAccess, Countable, Iterator
 
   /**
    * add an object to the collection
-   * @param Entity to add to the collection
-   * @param bool filter out objects that don't conform or contain errors
-   * @param bool record in $errors info about filtered objects
+   * @param mixed Entity|array
+   * @param bool true to skip entity if it has an error
    * @return bool ok or error
    */
-  public function set($entity, $filter = false, $set_error = false)
+  public function set($entity, $filter = false)
   {
+    $ok = false;
     switch(true)
     {
-      //entity class belong in this collection?
-      case $filter && !is_a($entity, $this->classname):
-        if($set_error) {
-          $this->errors[] =
-            'class '.get_class($entity)." must implement {$this->classname}";
-        }
-        $ok = false;
-        break;
-
-      //entity contains errors?
-      case $filter && method_exists($entity, 'errors') && $entity->errors():
-        if($set_error) {
-          $this->errors[$entity->__get($this->classpkey)] = $entity->errors();
-        }
-        $ok = false;
-        break;
-
-      //if an array is passed, construct an entity & add it
       case is_array($entity):
         $class = $this->classname;
-        $ok = $this->set(new $class($entity), true, true);
+        return $this->set(new $class($entity));
+
+      case !is_a($entity, $this->classname):
+        $this->errors[] = 'invalid item';
         break;
 
-      //add to the collection
+      case $entity->errors():
+        $id = $entity->__get($this->classpkey);
+        $this->errors[$id] = $entity->errors();
+        if(!$filter) {
+        	$this->_add($entity);
+        }
+        break;
+
       default:
         $this->_add($entity);
         $ok = true;
@@ -152,12 +144,17 @@ abstract class Collection implements ArrayAccess, Countable, Iterator
   }
 
   /**
+   * @param bool true to clear errors
    * @return array note objects that were not of class $this->classname or
    * contained errors themselves @see set()
    */
-  public function errors()
+  public function errors($clear = true)
   {
-    return $this->errors;
+    $errors = $this->errors;
+    if($clear) {
+    	$this->errors = array();
+    }
+    return $errors;
   }
 
   /**
