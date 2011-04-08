@@ -96,7 +96,7 @@ abstract class Collection implements ArrayAccess, Countable, Iterator
         $id = $entity->__get($this->classpkey);
         $this->errors[$id] = $entity->errors();
         if(!$filter) {
-        	$this->_add($entity);
+          $this->_add($entity);
         }
         break;
 
@@ -152,7 +152,7 @@ abstract class Collection implements ArrayAccess, Countable, Iterator
   {
     $errors = $this->errors;
     if($clear) {
-    	$this->errors = array();
+      $this->errors = array();
     }
     return $errors;
   }
