@@ -4,8 +4,7 @@ namespace library\Type;
 use ArrayAccess
   , Countable
   , Iterator
-  , InvalidArgumentException
-  , RuntimeException;
+  , InvalidArgumentException;
 
 /**
  * Collection - entity container with consistent getter/setter/indexing
@@ -86,13 +85,17 @@ abstract class Collection implements ArrayAccess, Countable, Iterator
     {
       case is_array($entity):
         $class = $this->classname;
-        return $this->set(new $class($entity));
+        return $this->set(new $class($entity), true);
 
-      case !is_a($entity, $this->classname):
-        $this->errors[] = 'invalid item';
+      case $filter && !is_a($entity, $this->classname):
+        $this->errors[] = "invalid item, not a '{$this->classname}'";
         break;
 
-      case $entity->errors():
+      case $filter && !($entity instanceof Entity):
+        $this->errors[] = "invalid item, '{$this->classname}' is not an Entity";
+        break;
+
+      case $filter && $entity->errors():
         $id = $entity->__get($this->classpkey);
         $this->errors[$id] = $entity->errors();
         if(!$filter) {
@@ -120,11 +123,11 @@ abstract class Collection implements ArrayAccess, Countable, Iterator
 
   /**
    * protect against accidental property assignment; use $this->set() otherwise
-   * @throws RuntimeException
+   * @throws InvalidArgumentException
    */
   public function __set($key, $val)
   {
-    throw new RuntimeException("setting undeclared property '$key' not allowed");
+    throw new InvalidArgumentException("setting undeclared property '$key' not allowed");
   }
 
   /**
