@@ -388,8 +388,9 @@ abstract class Entity implements ArrayAccess, Countable, Iterator
   }
 
   /**
-   * unix timestamp; if $always_update = true or if the current value is not a
-   * valid timestamp, return the current time
+   * if $always_update = true or if the current value is not a valid timestamp,
+   * return the current time. intended to be similar to sql column type of the
+   * same name.
    * @param scalar
    * @param bool change current value even if it's already a valid timestamp
    * @return int epoch seconds
@@ -402,9 +403,39 @@ abstract class Entity implements ArrayAccess, Countable, Iterator
     return (int) $val;
   }
 
+  /**
+   * shortcut for timestampSanitize but do not update unless prior value is not
+   * a valid unix timestamp
+   * @param scalar
+   * @return int epoch seconds
+   */
   public static function datetimeSanitize($val)
   {
     return self::timestampSanitize($val, false);
+  }
+
+  /**
+   * same as strtotime, but pass thru probable unix timestamps
+   * @param scalar
+   * @return int epoch seconds
+   */
+  public static function strtotimeSanitize($val)
+  {
+    switch(true)
+    {
+      case is_int($val) && self::timestampValidate($val):
+        $out = $val;
+        break;
+
+      case ctype_digit($val) && self::timestampValidate($val):
+        $out = (int) $val;
+        break;
+
+      default:
+        $out = strtotime($val);
+    }
+
+    return $out;
   }
 
   /**
