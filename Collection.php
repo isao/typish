@@ -25,8 +25,9 @@ abstract class Collection implements ArrayAccess, Countable, Iterator
       throw new InvalidArgumentException('class and/or key name undefined');
     }
 
+    $filter = empty($options['filter']);
     foreach($entities as $entity) {
-      $this->set($entity);
+      $this->set($entity, $filter);
     }
   }
 
