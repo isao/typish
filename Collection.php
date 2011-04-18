@@ -85,7 +85,7 @@ abstract class Collection implements ArrayAccess, Countable, Iterator
     {
       case is_array($entity):
         $class = $this->classname;
-        return $this->set(new $class($entity), true);
+        return $this->set(new $class($entity), $filter);
 
       case $filter && !is_a($entity, $this->classname):
         $this->errors[] = "invalid item, not a '{$this->classname}'";
