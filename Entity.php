@@ -368,13 +368,11 @@ abstract class Entity implements ArrayAccess, Countable, Iterator
 
   /**
    * @param scalar
-   * @return int 1 if $val is 1|"1"|"true"|"on"|"yes"|"y", else 0
+   * @return int 1 if $val is 1|"1"|"true"|"on"|"yes", else 0
    */
   public static function intboolSanitize($val)
   {
-    return (int) (
-      filter_var($val, FILTER_VALIDATE_BOOLEAN) || (strtoupper($val) === 'Y')
-    );
+    return (int) filter_var($val, FILTER_VALIDATE_BOOLEAN);
   }
 
   /**
